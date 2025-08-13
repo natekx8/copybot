@@ -8,22 +8,24 @@ intents.guilds = True
 
 bot = commands.Bot(command_prefix="!", intents=intents)
 
-# Lista ról w kolejności od najwyższych uprawnień do najniższych
+# Definicja ról: nazwa, emoji, kolor
 ROLES = [
-    "Owner",
-    "CEO",
-    "Admin",
-    "Mod",
-    "Investor",
-    "Vip",
-    "Server Booster",
-    "Only Main Rooster",
-    "Only Academy",
-    "Only Future",
-    "Coach",
-    "Only Community",
-    "Verified",
-    "Unverified"
+    {"name": "Bots", "emoji": "🤖", "color": discord.Color.light_grey()},  # nowa rola na górze
+    {"name": "Owner", "emoji": "👑", "color": discord.Color.dark_red()},
+    {"name": "CEO", "emoji": "🏛️", "color": discord.Color.red()},
+    {"name": "Admin", "emoji": "🛡️", "color": discord.Color.orange()},
+    {"name": "Mod", "emoji": "🔧", "color": discord.Color.gold()},
+    {"name": "Investor", "emoji": "💵", "color": discord.Color.green()},
+    {"name": "Vip", "emoji": "🌟", "color": discord.Color.purple()},
+    {"name": "Server Booster", "emoji": "🚀", "color": discord.Color.blue()},
+    {"name": "Only Main Rooster", "emoji": "🥇", "color": discord.Color.teal()},
+    {"name": "Only Academy", "emoji": "🎓", "color": discord.Color.cyan()},
+    {"name": "Only Future", "emoji": "🔮", "color": discord.Color.green()},
+    {"name": "Coach", "emoji": "🏅", "color": discord.Color.dark_gold()},
+    {"name": "Only Community", "emoji": "👥", "color": discord.Color.light_grey()},
+    {"name": "Verified", "emoji": "✅", "color": discord.Color.lighter_grey()},
+    {"name": "Unverified", "emoji": "❌", "color": discord.Color.default()},
+    {"name": "Bots", "emoji": "🤖", "color": discord.Color.light_grey()}  # duplikat na samym dole
 ]
 
 @bot.event
@@ -39,11 +41,11 @@ async def on_ready():
         return
 
     # Tworzenie ról
-    for role_name in ROLES:
-        role_display_name = f"・{role_name}"  # dodaj znak ・ na początku
+    for role_info in ROLES:
+        role_display_name = f"{role_info['emoji']}・{role_info['name']}"
         existing_role = discord.utils.get(guild.roles, name=role_display_name)
         if not existing_role:
-            await guild.create_role(name=role_display_name)
+            await guild.create_role(name=role_display_name, color=role_info['color'])
             print(f"✅ Utworzono rolę: {role_display_name}")
         else:
             print(f"⚠️ Rola już istnieje: {role_display_name}")
